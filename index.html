@@ -12,14 +12,17 @@
         <button onclick="generateBarcode()">Generate Barcode</button>
     </div>
     <div id="barcode-output"></div>
+    <a id="download-link" style="display: none;">Download Barcode</a>
 
     <script>
         function generateBarcode() {
             const barcodeData = document.getElementById('barcode-data').value;
             const barcodeOutput = document.getElementById('barcode-output');
+            const downloadLink = document.getElementById('download-link');
 
-            // Clear previous barcode, if any
+            // Clear previous barcode and download link, if any
             barcodeOutput.innerHTML = '';
+            downloadLink.style.display = 'none';
 
             if (barcodeData.trim() === '') {
                 alert('Please enter data to encode.');
@@ -40,6 +43,18 @@
 
             // Display the barcode
             barcodeOutput.innerHTML = barcodeSVG;
+
+            // Convert SVG to PNG (you may need to include a library for this step)
+            // For example, you can use the canvg library
+            const svg = new XMLSerializer().serializeToString(barcodeOutput.firstChild);
+            const canvas = document.createElement('canvas');
+            canvg(canvas, svg);
+            const barcodeImage = canvas.toDataURL('image/png');
+
+            // Create a download link
+            downloadLink.href = barcodeImage;
+            downloadLink.download = 'barcode.png';
+            downloadLink.style.display = 'block';
         }
     </script>
 </body>
