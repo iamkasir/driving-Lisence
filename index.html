@@ -42,19 +42,28 @@
             const barcodeSVG = barcode.encode(barcodeData).toSvg();
 
             // Display the barcode
-            barcodeOutput.innerHTML = barcodeSVG;
+            barcodeOutput.appendChild(barcodeSVG);
 
             // Convert SVG to PNG (you may need to include a library for this step)
             // For example, you can use the canvg library
-            const svg = new XMLSerializer().serializeToString(barcodeOutput.firstChild);
+            const svg = new XMLSerializer().serializeToString(barcodeSVG);
             const canvas = document.createElement('canvas');
-            canvg(canvas, svg);
-            const barcodeImage = canvas.toDataURL('image/png');
+            const context = canvas.getContext('2d');
+            const img = new Image();
 
-            // Create a download link
-            downloadLink.href = barcodeImage;
-            downloadLink.download = 'barcode.png';
-            downloadLink.style.display = 'block';
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                context.drawImage(img, 0, 0);
+                
+                // Create a download link
+                const barcodeImage = canvas.toDataURL('image/png');
+                downloadLink.href = barcodeImage;
+                downloadLink.download = 'barcode.png';
+                downloadLink.style.display = 'block';
+            };
+
+            img.src = 'data:image/svg+xml;base64,' + btoa(svg);
         }
     </script>
 </body>
