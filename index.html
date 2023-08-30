@@ -2,169 +2,45 @@
 <html>
 <head>
     <title>PDF417 Barcode Generator</title>
+    <!-- Include the pdf417-js library -->
+    <script src="https://cdn.jsdelivr.net/npm/pdf417-js/dist/pdf417.js"></script>
 </head>
 <body>
     <h1>PDF417 Barcode Generator</h1>
     <div id="barcode-container">
-        <input type="text" id="barcode-data" placeholder="Enter data to encode">
+        <textarea id="barcode-data" rows="5" placeholder="Enter data to encode"></textarea>
         <button onclick="generateBarcode()">Generate Barcode</button>
     </div>
     <div id="barcode-output"></div>
-    
-    <!-- Include the necessary libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 20px;
-}
 
-h1 {
-    color: #333;
-}
+    <script>
+        function generateBarcode() {
+            const barcodeData = document.getElementById('barcode-data').value;
+            const barcodeOutput = document.getElementById('barcode-output');
 
-#barcode-container {
-    margin: 20px;
-}
+            // Clear previous barcode, if any
+            barcodeOutput.innerHTML = '';
 
-#barcode-data {
-    padding: 5px;
-    font-size: 16px;
-}
+            if (barcodeData.trim() === '') {
+                alert('Please enter data to encode.');
+                return;
+            }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
+            // Create a PDF417 barcode
+            const barcode = new PDF417();
 
-button:hover {
-    background-color: #0056b3;
-}
+            // Set encoding options
+            barcode.options = {
+                wrapX: true,    // Enable wrapping
+                columns: 6      // Set the number of columns
+            };
 
-#barcode-output {
-    margin: 20px;
-}
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 20px;
-}
+            // Generate the barcode
+            const barcodeSVG = barcode.encode(barcodeData).toSvg();
 
-h1 {
-    color: #333;
-}
-
-#barcode-container {
-    margin: 20px;
-}
-
-#barcode-data {
-    padding: 5px;
-    font-size: 16px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-#barcode-output {
-    margin: 20px;
-}
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 20px;
-}
-
-h1 {
-    color: #333;
-}
-
-#barcode-container {
-    margin: 20px;
-}
-
-#barcode-data {
-    padding: 5px;
-    font-size: 16px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-#barcode-output {
-    margin: 20px;
-}
-function generateBarcode() {
-    const barcodeData = document.getElementById('barcode-data').value;
-    const barcodeOutput = document.getElementById('barcode-output');
-    
-    // Clear previous barcode, if any
-    barcodeOutput.innerHTML = '';
-
-    if (barcodeData.trim() === '') {
-        alert('Please enter data to encode.');
-        return;
-    }
-
-    JsBarcode("#barcode-output", barcodeData, {
-        format: "PDF417",
-        width: 2,
-        height: 100,
-    });
-}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>USA Driver's License Barcode Generator</title>
-</head>
-<body>
-    <h1>USA Driver's License Barcode Generator</h1>
-    <div id="dl-data">
-        <label for="dl-first-name">First Name:</label>
-        <input type="text" id="dl-first-name" placeholder="Enter First Name"><br><br>
-        
-        <label for="dl-last-name">Last Name:</label>
-        <input type="text" id="dl-last-name" placeholder="Enter Last Name"><br><br>
-
-        <label for="dl-dob">Date of Birth:</label>
-        <input type="date" id="dl-dob"><br><br>
-
-        <label for="dl-license-number">License Number:</label>
-        <input type="text" id="dl-license-number" placeholder="Enter License Number"><br><br>
-
-        <button onclick="generateDLBarcode()">Generate DL Barcode</button>
-    </div>
-    <div id="barcode-output"></div>
-    
-    <!-- Include the necessary libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-    <script src="script.js"></script>
+            // Display the barcode
+            barcodeOutput.innerHTML = barcodeSVG;
+        }
+    </script>
 </body>
 </html>
